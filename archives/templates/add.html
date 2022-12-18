@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adding</title>
+</head>
+<body>
+<h1>Add data</h1>
+
+<form action="addrecord/" method="post">
+{% csrf_token %}
+Input date:<br>
+<input name="dat">
+<br><br>
+Input USD:<br>
+<input name="usd">
+<br><br>
+Input EUR:<br>
+<input name="eur">
+<br><br>
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>

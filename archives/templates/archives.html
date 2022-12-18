@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Archives</title>
+</head>
+<body>
+<h1>Currencies</h1>
+
+<table border="1">
+<tr>
+<td>ID</td>
+<td>DATE</td>
+<td>USD</td>
+<td>EUR</td>
+<td>ACTION</td>
+</tr>
+{% for x in myarchives %}
+<tr>
+<td>{{ x.id }}</td>
+<td>{{ x.dat }}</td>
+<td>{{ x.usd }}</td>
+<td>{{ x.eur }}</td>
+<td><a href="delete/{{ x.id }}">delete</a></td>
+<td><a href="update/{{ x.id }}">update</a></td>
+</tr>
+{% endfor %}
+</table>
+<p>
+<a href="add/">Add data</a>
+</p>
+</body>
+</html>

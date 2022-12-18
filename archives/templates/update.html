@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update data</title>
+</head>
+<body>
+<h1>Update data</h1>
+
+<form action="updaterecord/{{ myarchives.id }}" method="post">
+{% csrf_token %}
+Input new date:<br>
+<input name="dat" value="{{ myarchives.dat }}">
+<br><br>
+Input new USD:<br>
+<input name="usd" value="{{ myarchives.usd }}">
+<br><br>
+Input new EUR:<br>
+<input name="eur" value="{{ myarchives.usd }}">
+<br><br>
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
