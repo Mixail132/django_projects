@@ -3,6 +3,7 @@ from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Archives
+import requests
 
 
 def index(request):
@@ -18,21 +19,38 @@ def add(request):
 
 
 def update(request,id):
-    """ The update view does the following:
-    Gets the id as an argument.
-    Uses the id to locate the correct record in the Archiver table.
-    loads a template called update.html.
-    Creates an object containing the member.
-    Sends the object to the template.
-    Outputs the HTML that is rendered by the template."""
     myarchives = Archives.objects.get(id=id)
-    template = loader.get_template("update.html")
-    context = {"myarchives": myarchives}
-    return HttpResponse(template.render(context, request))
+    dat = myarchives.dat
+    print(dat)
+    usdapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/USD?parammode=2&ondate={dat}")
+    eurapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/EUR?parammode=2&ondate={dat}")
+    usdres = usdapi.text
+    eurres = eurapi.text
+    usdcur = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
+    eurcur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
+    myarchives.usd = usdcur
+    myarchives.eur = eurcur
+    myarchives.save()
+    return HttpResponseRedirect(reverse("index"))
+
+# def update(request,id):
+#     """ The update view does the following:
+#     Gets the id as an argument.
+#     Uses the id to locate the correct record in the Archiver table.
+#     loads a template called update.html.
+#     Creates an object containing the member.
+#     Sends the object to the template.
+#     Outputs the HTML that is rendered by the template."""
+#     myarchives = Archives.objects.get(id=id)
+#     template = loader.get_template("update.html")
+#     context = {"myarchives": myarchives,}
+#     return HttpResponse(template.render(context, request))
+
+
+
 
 def delete(request,id):
     myarchives = Archives.objects.get(id=id)
-    #myarchives.delete()
     myarchives.usd = 0
     myarchives.eur = 0
     myarchives.save()
