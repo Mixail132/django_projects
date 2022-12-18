@@ -32,7 +32,10 @@ def update(request,id):
 
 def delete(request,id):
     myarchives = Archives.objects.get(id=id)
-    myarchives.delete()
+    #myarchives.delete()
+    myarchives.usd = 0
+    myarchives.eur = 0
+    myarchives.save()
     return HttpResponseRedirect(reverse("index"))
 
 def addrecord(request):
