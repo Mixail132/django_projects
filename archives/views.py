@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Archives
 import requests
+import telebot
 
 
 def index(request):
@@ -46,14 +47,21 @@ def update(request,id):
 #     context = {"myarchives": myarchives,}
 #     return HttpResponse(template.render(context, request))
 
-
-
-
 def delete(request,id):
     myarchives = Archives.objects.get(id=id)
     myarchives.usd = 0
     myarchives.eur = 0
+    #myarchives.delete()
     myarchives.save()
+    return HttpResponseRedirect(reverse("index"))
+
+def send(request,id):
+    myarchives = Archives.objects.get(id=id)
+    token = "5655170166:AAG2MrYcLmqeBPyCI-Bvo38Mlj3qjbg4FSQ"
+    chat_id = "5740110040"
+    bot = telebot.TeleBot(token)
+    msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}"
+    bot.send_message(chat_id, msg)
     return HttpResponseRedirect(reverse("index"))
 
 def addrecord(request):
