@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Archives
 import requests
-import telebot
 
 
 def index(request):
@@ -59,24 +58,6 @@ def delete(request,id):
     myarchives.save()
     return HttpResponseRedirect(reverse("index"))
 
-def tel(request,id):
-    myarchives = Archives.objects.get(id=id)
-    token = "5655170166:AAG2MrYcLmqeBPyCI-Bvo38Mlj3qjbg4FSQ"
-    chat_id = "5740110040"
-    bot = telebot.TeleBot(token)
-    msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}\nRUB {myarchives.rub}"
-    bot.send_message(chat_id, msg)
-    return HttpResponseRedirect(reverse("index"))
-
-def vib(request,id):
-    pass
-#    myarchives = Archives.objects.get(id=id)
-    # token = "5655170166:AAG2MrYcLmqeBPyCI-Bvo38Mlj3qjbg4FSQ"
-    # chat_id = "5740110040"
-    # bot = telebot.TeleBot(token)
-  #  msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}\nCNY {myarchives.cny}"
-    # bot.send_message(chat_id, msg)
- #   return HttpResponseRedirect(reverse("index"))
 
 def addrecord(request):
     d = request.POST["dat"]
@@ -98,5 +79,3 @@ def updaterecord(request, id):
     data.save()
     return HttpResponseRedirect(reverse("index"))
 
-# При нажатии на кнопку update происходит добавление записи
-# При нажатии на кнопку Add ошибка
