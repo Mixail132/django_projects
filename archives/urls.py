@@ -8,5 +8,6 @@ urlpatterns = [
     path("update/<int:id>", views.update, name="update"),
     #path("update/updaterecord/<int:id>", views.updaterecord, name="updaterecord"),
     path("delete/<int:id>", views.delete, name="delete"),
-    path("send/<int:id>", views.send, name="send"),
+    path("tel/<int:id>", views.tel, name="tel"),
+    path("vib/<int:id>", views.vib, name="vib"),
 ]

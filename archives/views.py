@@ -22,15 +22,18 @@ def add(request):
 def update(request,id):
     myarchives = Archives.objects.get(id=id)
     dat = myarchives.dat
-    print(dat)
     usdapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/USD?parammode=2&ondate={dat}")
     eurapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/EUR?parammode=2&ondate={dat}")
+    rubapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/RUB?parammode=2&ondate={dat}")
     usdres = usdapi.text
     eurres = eurapi.text
+    rubres = rubapi.text
     usdcur = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
     eurcur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
+    rubcur = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
     myarchives.usd = usdcur
     myarchives.eur = eurcur
+    myarchives.rub = rubcur
     myarchives.save()
     return HttpResponseRedirect(reverse("index"))
 
@@ -51,18 +54,29 @@ def delete(request,id):
     myarchives = Archives.objects.get(id=id)
     myarchives.usd = 0
     myarchives.eur = 0
+    myarchives.rub = 0
     #myarchives.delete()
     myarchives.save()
     return HttpResponseRedirect(reverse("index"))
 
-def send(request,id):
+def tel(request,id):
     myarchives = Archives.objects.get(id=id)
     token = "5655170166:AAG2MrYcLmqeBPyCI-Bvo38Mlj3qjbg4FSQ"
     chat_id = "5740110040"
     bot = telebot.TeleBot(token)
-    msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}"
+    msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}\nRUB {myarchives.rub}"
     bot.send_message(chat_id, msg)
     return HttpResponseRedirect(reverse("index"))
+
+def vib(request,id):
+    pass
+#    myarchives = Archives.objects.get(id=id)
+    # token = "5655170166:AAG2MrYcLmqeBPyCI-Bvo38Mlj3qjbg4FSQ"
+    # chat_id = "5740110040"
+    # bot = telebot.TeleBot(token)
+  #  msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}\nCNY {myarchives.cny}"
+    # bot.send_message(chat_id, msg)
+ #   return HttpResponseRedirect(reverse("index"))
 
 def addrecord(request):
     d = request.POST["dat"]

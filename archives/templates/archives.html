@@ -11,10 +11,12 @@
 <tr>
 <!--<td>ID</td>-->
 
-    <td width="100"><b>DATE</b></td>
+<td width="100"><b>DATE</b></td>
 <td width="70"><b>USD</b></td>
-    <td width="70"><b>EUR</b></td>
-    <td colspan="3" width ="180"><b>ACTION</b></td>
+<td width="70"><b>EUR</b></td>
+<td width="70"><b>RUB</b></td>
+<td colspan="2" width ="180"><b>ACTION</b></td>
+<td colspan="2" width ="100"><b>SEND</b></td>
 
 </tr>
 {% for x in myarchives %}
@@ -23,9 +25,11 @@
 <td>{{ x.dat }}</td>
 <td>{{ x.usd }}</td>
 <td>{{ x.eur }}</td>
+<td>{{ x.rub }}</td>
 <td><a href="delete/{{ x.id }}">delete</a></td>
 <td><a href="update/{{ x.id }}">update</a></td>
-<td><a href="send/{{ x.id }}">send</a></td>
+<td><a href="tel/{{ x.id }}">telegram</a></td>
+<!--<td><a href="vib/{{ x.id }}">viber</a></td>-->
 </tr>
 {% endfor %}
 </table>
