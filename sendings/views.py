@@ -1,7 +1,6 @@
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from archives.models import Archives
-from archives.views import index
 import telebot
 
 
@@ -12,7 +11,7 @@ def tel(request, id):
     bot = telebot.TeleBot(token)
     msg = f"{myarchives.dat}:\nUSD {myarchives.usd}\nEUR {myarchives.eur}\nRUB {myarchives.rub}"
     bot.send_message(chat_id, msg)
-    return HttpResponseRedirect(reverse(index))
+    return HttpResponseRedirect(reverse("index"))
 
 
 def vib(request, id):
