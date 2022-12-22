@@ -5,6 +5,14 @@
     <title>Archives</title>
 </head>
 <body>
+<p>
+<a href="add/">Add period</a>
+<a href="del/">Delete period</a>
+<a href="deleteselected/">Delete selected</a>
+<a href="upd/">Update empty</a>
+<a href="sen/">Send selected</a>
+</p>
+
 <h1>National Bank's rates</h1>
 
 <table border="1">
@@ -15,8 +23,7 @@
 <td width="70"><b>USD</b></td>
 <td width="70"><b>EUR</b></td>
 <td width="70"><b>RUB</b></td>
-<td colspan="2" width ="180"><b>ACTION</b></td>
-<td colspan="2" width ="100"><b>SEND</b></td>
+<td width ="50"><b></b><input name="sel" type="checkbox"></td>
 
 </tr>
 {% for x in myarchives %}
@@ -26,15 +33,13 @@
 <td>{{ x.usd }}</td>
 <td>{{ x.eur }}</td>
 <td>{{ x.rub }}</td>
-<td><a href="delete/{{ x.id }}">delete</a></td>
+<td><input name="{{ x.id }}" type="checkbox" ></td>
+<td><a href="deletestring/{{ x.id }}">deletestring</a></td>
 <td><a href="update/{{ x.id }}">update</a></td>
 <td><a href="tel/{{ x.id }}">telegram</a></td>
 <!--<td><a href="vib/{{ x.id }}">viber</a></td>-->
 </tr>
 {% endfor %}
 </table>
-<p>
-<a href="add/">Add data</a>
-</p>
 </body>
 </html>

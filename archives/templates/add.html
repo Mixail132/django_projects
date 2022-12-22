@@ -5,24 +5,28 @@
     <title>Adding</title>
 </head>
 <body>
-<h1>Add data</h1>
+<h1>Add period</h1>
 
 <form action="addrecord/" method="post">
 {% csrf_token %}
-Input date:<br>
-<input name="dat">
-<br><br>
-Input USD:<br>
-<input name="usd">
-<br><br>
-Input EUR:<br>
-<input name="eur">
-<br><br>
-Input RUR:<br>
-<input name="rur">
-<br><br>
-<input type="submit" value="Submit">
-<input type="date" value="Submit">
+Input start date:<br>
+<input name="sdat" type = "date"><br>
+<br>
+Input final date:<br>
+<input name="fdat" type = "date"><br>
+<br>
+<!--Choose a currency:<br>-->
+<!--    <label>USD<input name="cusd" type="checkbox"></label><br>-->
+<!--    <label>EUR<input name="ceur" type="checkbox"></label><br>-->
+<!--    <label>RUB<input name="crub" type="checkbox"></label><br>-->
+<br>
+<!--Input EUR:<br>-->
+<!--<input name="eur"><br>-->
+<!--<br>-->
+<!--Input RUR:<br>-->
+<!--<input name="rur"><br>-->
+<br>
+<input type="submit" value="Create an empty archive">
 </form>
 </body>
 </html>

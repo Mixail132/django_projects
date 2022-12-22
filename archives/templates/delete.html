@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deleting</title>
+</head>
+<body>
+<h1>Delete period</h1>
+
+<form action="delrecord/" method="post">
+{% csrf_token %}
+Input start date:<br>
+<input name="sdat" type = "date"><br>
+<br>
+Input final date:<br>
+<input name="fdat" type = "date"><br>
+<!--Input EUR:<br>-->
+<!--<input name="eur"><br>-->
+<!--<br>-->
+<!--Input RUR:<br>-->
+<!--<input name="rur"><br>-->
+<br>
+<input type="submit" value="Delete the data for the period">
+</form>
+</body>
+</html>
