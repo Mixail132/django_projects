@@ -6,11 +6,11 @@ from .models import Archives
 import requests
 from datetime import timedelta, date
 def index(request):
-    myarchives = Archives.objects.all().values()
+    archives = Archives.objects.all().values()
+    myarchives = sorted(archives, key = lambda e :e["dat"])
     template = loader.get_template("archives.html")
     context = {"myarchives": myarchives,}
     return HttpResponse(template.render(context, request))
-
 
 def add(request):
     template = loader.get_template("add.html")
@@ -52,23 +52,19 @@ def update(request,id):
 #     return HttpResponse(template.render(context, request))
 
 def delrecord(request):
-    sdat = request.POST["sdat"]
-    fdat = request.POST["fdat"]
-    daterange = date_range(sdat, fdat)
-    for i in daterange:
-           myarchives = Archives.objects.get(dat=i)
-           myarchives.delete()
-
-
-        #Archives(dat=i, usd = 0, eur = 0, rub = 0)
-        #data.save()
-
-    # myarchives = Archives.objects.get(id=id)
-    # myarchives.usd = 0
-    # myarchives.eur = 0
-    # myarchives.rub = 0
-    #myarchives.delete()
-    # myarchives.save()
+    sdat = request.POST["sdat"].split("-")
+    fdat = request.POST["fdat"].split("-")
+    sdate = date(int(sdat[0]), int(sdat[1]), int(sdat[2]))
+    fdate = date(int(fdat[0]), int(fdat[1]), int(fdat[2]))
+    def daterange(startdate, finaldate):
+        for n in range(int((finaldate - startdate).days) + 1):
+            yield startdate + timedelta(n)
+    for dates in daterange(sdate, fdate):
+        m = Archives.objects.values()
+        for i in range(len(m)):
+            if dates == m[i]["dat"]: # i  элемент списка по порядку, m - ключ "dat" вложенного словаря
+                data = Archives.objects.all()[i]
+                data.delete()
     return HttpResponseRedirect(reverse("index"))
 
 def deletestring(request,id):
@@ -92,33 +88,12 @@ def addrecord(request):
     m = Archives.objects.values() # m - список словарей
     for dates in daterange(sdate, fdate):
         for i in range(len(m)):
-            if dates == m[i]["dat"]: # i  элемент списка по порядку, m - ключ вложенного словаря
+            if dates == m[i]["dat"]: # i  элемент списка по порядку, m - ключ "dat" вложенного словаря
                 break
         else: # работает только после break
             t = dates.strftime("%Y-%m-%d") #  делаем из даты строку
-            data = Archives(dat=t, usd=0, eur=0, rub=0)
+            data = Archives(dat=t)
             data.save()
-
-
-    # for i in Archives.objects.all():
-    #     n = Archives.dat
-    #     counter = 0
-    #     for j in Archives.objects.all():
-    #         h = Archives.dat
-    #         if n == h:
-    #             counter +=1
-    #         if counter > 1:
-    #             m = Archives.objects.get(id=id)
-    #             m.delete()
-    #
-
-    # cusd = 0 if request.POST["cusd"] == "on" else None
-    # ceur = 0 if request.POST["ceur"] == "on" else None
-    # crub = 0 if request.POST["crub"] == "on" else None
-    # print(cusd)
-    # print(ceur)
-    # dat = Archives(dat=d, usd=u, eur=e)
-    # dat.save()
     return HttpResponseRedirect(reverse("index"))
 
 
