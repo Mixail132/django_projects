@@ -5,15 +5,37 @@
     <title>Archives</title>
 </head>
 <body>
+<a href="">Вход</a>
+<a href="reg/">Регистрация</a>
 <p>
-<a href="add/">Add period</a>
-<a href="del/">Delete period</a>
-<a href="deleteselected/">Delete selected</a>
-<a href="upd/">Update empty</a>
-<a href="sen/">Send selected</a>
-</p>
+<!--<a href="add/">Add period</a>-->
+<!--<a href="del/">Delete period</a>-->
+<!--<a href="deleteselected/">Delete selected</a>-->
+<!--<a href="upd/">Update empty</a>-->
+<!--<a href="sen/">Send selected</a>-->
 
+</p>
 <h1>National Bank's rates</h1>
+
+<form action="do/" method="post" >
+{% csrf_token %}
+from:
+<input name="sdat" type = "date" value="{{ s }}">
+to:
+<input name="fdat" type = "date" value="{{ f }}">
+<!--<input type="submit" value="Ok">-->
+
+
+<select name ="doing">
+<!--  <option value="volvo" title="show data for the period">show</option>-->
+  <option value="addrecord">add</option>
+  <option value="updaterecord">update</option>
+  <option value="delrecord">delete</option>
+<!--  <option value="sendrecord">send</option>-->
+  <input type="submit" value="Do">
+</select>
+</form>
+<br>
 
 <table border="1">
 <tr>
@@ -23,21 +45,22 @@
 <td width="70"><b>USD</b></td>
 <td width="70"><b>EUR</b></td>
 <td width="70"><b>RUB</b></td>
-<td width ="50"><b></b><input name="sel" type="checkbox"></td>
+<td width="70"><b>SEND</b></td>
+
+<!--<td width ="50"><b></b><input name="sel" type="checkbox"></td>-->
 
 </tr>
 {% for x in myarchives %}
 <tr>
-<td>{{ x.id }}</td>
+<!--<td>{{ x.id }}</td>-->
 <td>{{ x.dat }}</td>
 <td>{{ x.usd }}</td>
 <td>{{ x.eur }}</td>
 <td>{{ x.rub }}</td>
-<td><input name="{{ x.id }}" type="checkbox" ></td>
-<td><a href="deletestring/{{ x.id }}">deletestring</a></td>
-<td><a href="update/{{ x.id }}">update</a></td>
-<td><a href="tel/{{ x.id }}">telegram</a></td>
-<!--<td><a href="vib/{{ x.id }}">viber</a></td>-->
+<!--<td><input name="{{ x.id }}" type="checkbox" ></td>-->
+<!--<td><a href="deletestring/{{ x.id }}">deletestring</a></td>-->
+<!--<td><a href="update/{{ x.id }}">update</a></td>-->
+<td><a href="tel/{{ x.id }}">send</a></td>
 </tr>
 {% endfor %}
 </table>

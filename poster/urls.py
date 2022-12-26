@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    #path("", views.index, name="index"),
+    #path("", include("archives.urls")),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('archives/', include("archives.urls")),
     path('archives/', include("sendings.urls")),
+    path("login/", include("accounts.urls")),
+    path("", include("accounts.urls")),
+    path('accounts/', include("accounts.urls")),
 
 ]
