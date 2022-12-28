@@ -12,3 +12,6 @@ class ValueErrorException(Exception):
 
 class EmptyValueException(Exception):
     pass
+
+class DateDoesNotExistYet(Exception):
+    pass

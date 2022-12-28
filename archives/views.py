@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Archives, ValueErrorException
+from .models import Archives, ValueErrorException, DateDoesNotExistYet
 from django.contrib.auth.models import User
 import requests
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 
 def index(request):
     """Отобразитьd данные"""
@@ -18,6 +18,9 @@ def index(request):
 def updaterecord(request):
     """Обновить данные за указанный период"""
     m = Archives.objects.values()
+    today = datetime.today().date()
+    if fdate > today:
+         raise DateDoesNotExistYet("The date you input has not yet come :)")
     for dates in daterange(sdate, fdate):
         for i in range(len(m)):
             if dates == m[i]["dat"]:
@@ -85,3 +88,5 @@ def do(request):
         return HttpResponseRedirect(reverse("index"))
     return HttpResponseRedirect(reverse (f"{adds}"))
 
+
+print(datetime.today().date())
