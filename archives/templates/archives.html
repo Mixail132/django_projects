@@ -1,53 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Archives</title>
-</head>
-<body>
-<a href="">Вход</a>
-<a href="reg/">Регистрация</a>
-<p>
-<!--<a href="add/">Add period</a>-->
-<!--<a href="del/">Delete period</a>-->
-<!--<a href="deleteselected/">Delete selected</a>-->
-<!--<a href="upd/">Update empty</a>-->
-<!--<a href="sen/">Send selected</a>-->
+{% extends  'base.html' %}
+{% block main%}
+{% if user.is_authenticated %}
+<p>Username :  <b>{{user.username}}</b>   <a href="logout/">Logout</a></p>
+{% else %}
+<a href="login/">Login</a>
+{% endif %}
+<h3>National Bank's rates</h3>
 
-</p>
-<h1>National Bank's rates</h1>
-
-<form action="do/" method="post" >
+<form action="do/" method="post"  >
 {% csrf_token %}
 from:
-<input name="sdat" type = "date" value="{{ s }}">
+<input name="sdat" type = "date">
 to:
-<input name="fdat" type = "date" value="{{ f }}">
-<!--<input type="submit" value="Ok">-->
-
+<input name="fdat" type = "date">
+<br>
 
 <select name ="doing">
-<!--  <option value="volvo" title="show data for the period">show</option>-->
   <option value="addrecord">add</option>
   <option value="updaterecord">update</option>
   <option value="delrecord">delete</option>
-<!--  <option value="sendrecord">send</option>-->
-  <input type="submit" value="Do">
+  <input type="submit" value="Do"
+         onclick ="
+         {% if not user.is_authenticated %}
+         alert('You should get authenticated!')
+         {% endif %}">
 </select>
 </form>
 <br>
 
 <table border="1">
 <tr>
-<!--<td>ID</td>-->
 
-<td width="100"><b>DATE</b></td>
-<td width="70"><b>USD</b></td>
-<td width="70"><b>EUR</b></td>
-<td width="70"><b>RUB</b></td>
-<td width="70"><b>SEND</b></td>
+<td width="450"><b>DATE</b></td>
+<td width="150"><b>USD</b></td>
+<td width="150"><b>EUR</b></td>
+<td width="150"><b>RUB</b></td>
+<td width="150"><b>SEND</b></td>
 
-<!--<td width ="50"><b></b><input name="sel" type="checkbox"></td>-->
 
 </tr>
 {% for x in myarchives %}
@@ -57,12 +46,9 @@ to:
 <td>{{ x.usd }}</td>
 <td>{{ x.eur }}</td>
 <td>{{ x.rub }}</td>
-<!--<td><input name="{{ x.id }}" type="checkbox" ></td>-->
-<!--<td><a href="deletestring/{{ x.id }}">deletestring</a></td>-->
-<!--<td><a href="update/{{ x.id }}">update</a></td>-->
-<td><a href="tel/{{ x.id }}">send</a></td>
+<td><a {% if user.is_authenticated %} href="tel/{{ x.id }}"{% endif %}>send</a></td>
 </tr>
 {% endfor %}
 </table>
-</body>
-</html>
+
+{% endblock %}
