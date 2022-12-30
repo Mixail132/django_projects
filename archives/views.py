@@ -5,11 +5,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Archives, ValueErrorException, DateDoesNotExistYet
 from django.contrib.auth.models import User
 import requests
+import schedule
 from datetime import timedelta, date, datetime
+import time
+#from ..sendings.views import tel
+
 
 def index(request):
-    """Отобразитьd данные"""
+    """Отобразить данные"""
     archives = Archives.objects.all().values()
+    addtodayrecord()
     myarchives = sorted(archives, key=lambda e: e["dat"])
     template = loader.get_template("archives.html")
     context = {"myarchives": myarchives,}
@@ -66,6 +71,20 @@ def addrecord(request):
             data.save()
     return HttpResponseRedirect(reverse("index"))
 
+def addtodayrecord():
+    #schedule.every().day.at("21:45").do()
+    archives = Archives.objects.all().values()
+    today = datetime.today().date()
+    for i in range(len(archives)):
+        if today == archives[i]["dat"]:
+            break
+    else:
+        data = Archives(dat=today)
+        data.save()
+
+
+
+# schedule.every().day.at("19:50").do(job)
 def do(request):
     """Определить выбранное действие за указанный период"""
     user=request.user
@@ -89,4 +108,4 @@ def do(request):
     return HttpResponseRedirect(reverse (f"{adds}"))
 
 
-print(datetime.today().date())
+
