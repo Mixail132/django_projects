@@ -23,12 +23,17 @@ def updatebyapi(dat):
     global usdres
     global eurres
     global rubres
+    myarchives = Archives.objects.get(dat=dat)
     usdapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/USD?parammode=2&ondate={dat}")
     eurapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/EUR?parammode=2&ondate={dat}")
     rubapi = requests.get(f"https://www.nbrb.by/api/exrates/rates/RUB?parammode=2&ondate={dat}")
     usdres = usdapi.text
     eurres = eurapi.text
     rubres = rubapi.text
+    myarchives.usd = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
+    myarchives.eur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
+    myarchives.rub = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
+    myarchives.save()
 
 
 def updaterecord(request):
@@ -40,13 +45,14 @@ def updaterecord(request):
     for dates in daterange(sdate, fdate):
         for i in range(len(m)):
             if dates == m[i]["dat"]:
-                myarchives = Archives.objects.get(dat=dates)
-                dat = myarchives.dat
-                updatebyapi(dat)
-                myarchives.usd = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
-                myarchives.eur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
-                myarchives.rub = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
-                myarchives.save()
+                # myarchives = Archives.objects.get(dat=dates)
+                #dat = myarchives.dat
+                #dat = dates
+                updatebyapi(dates)
+                # myarchives.usd = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
+                # myarchives.eur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
+                # myarchives.rub = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
+                # myarchives.save()
     return HttpResponseRedirect(reverse("index"))
 
 def daterange(startdate, finaldate):
@@ -98,11 +104,11 @@ def delrecord(request):
 #             myarchives.rub = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
 #             myarchives.save()
 
-archives = Archives.objects.values()
+#archives = Archives.objects.values()
 class Addings:
     def addrecord(request):
         """ Добавить строки в таблицу без данных за указанный период"""
-        # archives = Archives.objects.values()
+        archives = Archives.objects.values()
         for dates in daterange(sdate, fdate):
             for i in range(len(archives)):
                 if dates == archives[i]["dat"]:
@@ -114,11 +120,11 @@ class Addings:
         return HttpResponseRedirect(reverse("index"))
 
     def addtodayrecord():
-        # archives = Archives.objects.values()
+        archives = Archives.objects.values()
         dates = datetime.today().date()
         data = Archives(dat=dates)
         for i in range(len(archives)):
-            if dates == archives[i]["dat"]:
+              if dates == archives[i]["dat"]:
                 break
         else:
             data.save()
@@ -127,12 +133,12 @@ class Addings:
                 updatebyapi(dates)
             except:
                 pass  # здесь можно вывести сообщение alert о том, что связи нет
-            else:
-                myarchives = Archives.objects.get(dat=dates)
-                myarchives.usd = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
-                myarchives.eur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
-                myarchives.rub = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
-                myarchives.save()
+            # else:
+                # myarchives = Archives.objects.get(dat=dates)
+                # myarchives.usd = usdres[usdres.rfind(":") + 1:len(usdres) - 1]
+                # myarchives.eur = eurres[eurres.rfind(":") + 1:len(eurres) - 1]
+                # myarchives.rub = rubres[rubres.rfind(":") + 1:len(rubres) - 1]
+                # myarchives.save()
 
 
 def do(request):
